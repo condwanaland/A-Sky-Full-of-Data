@@ -1,0 +1,24 @@
+baseurl = "/"
+title = "Still the Data"
+author = "Conor Neilson"
+copyright = "&copy; 2020"
+canonifyurls = true
+paginate = 3
+theme = "silhouette-hugo"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+pygmentsUseClasses=true
+
+#disqusShortname = ""
+#googleAnalytics = ""
+
+[params]
+author = "Conor Neilson"
+introDescription = "Hi, I'm Conor Neilson. I analyse data. I travel. Occasionally I cook."
+contentSharing = "I'm happy for you to share content on this site, but please provide attribution."
+
+[social]
+instagram = "https://www.instagram.com/condwanaland/"
+linkedin = "https://www.linkedin.com/in/conor-neilson-49a04a141/"
+twitter = "https://twitter.com/condwanaland"
+
