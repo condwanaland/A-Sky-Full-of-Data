@@ -14,11 +14,12 @@ pygmentsUseClasses=true
 
 [params]
 author = "Conor Neilson"
-introDescription = "Hi, I'm Conor Neilson. I analyse data. I travel. Occasionally I cook."
+introDescription = "Recovering Marine Biologist turned Data Scientist/Consultant. Motorbike Lover, Avid Reader, R Enthusiast."
 contentSharing = "I'm happy for you to share content on this site, but please provide attribution."
 
 [social]
-instagram = "https://www.instagram.com/condwanaland/"
-linkedin = "https://www.linkedin.com/in/conor-neilson-49a04a141/"
-twitter = "https://twitter.com/condwanaland"
+instagram = "condwanaland"
+linkedin = "conor-neilson-49a04a141"
+twitter = "condwanaland"
+github = "condwanaland"
 
