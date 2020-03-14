@@ -6,7 +6,7 @@ categories:
   - Software Development
 tags:
   - Untagged
-featureImage: images/nelson_lakes.jpg
+featureImage: images/nelson_lakes_photo.jpg
 ---
 
 **Insert Lead paragraph here.**
