@@ -9,4 +9,4 @@ tags:
 featureImage: images/nelson_lakes_photo.jpg
 ---
 
-<!--more-->
+""<!--more-->""
