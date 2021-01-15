@@ -5,7 +5,7 @@ copyright = "&copy; 2020"
 canonifyurls = true
 paginate = 3
 theme = "silhouette-hugo"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
 
 pygmentsUseClasses=true
 
