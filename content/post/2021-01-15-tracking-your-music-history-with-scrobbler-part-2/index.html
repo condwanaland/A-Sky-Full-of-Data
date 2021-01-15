@@ -1,0 +1,92 @@
+---
+title: Tracking your music history with scrobbler (part 2)
+author: Conor Neilson
+date: '2021-01-15'
+slug: tracking-your-music-history-with-scrobbler-part-2
+categories:
+  - R
+tags:
+  - R
+  - tutorial
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>In part 2 of this series, we’ll be looking at how to actually start using scrobbler to download your music history.</p>
+<!--more-->
+<p>As a quick recap from part 1, scrobbling is a service offered by Last.fm, where any music you listen to on other platforms (i.e., Spotify) is recorded and stored by Last.fm, along with a timestamp and associated metadata. <code>scrobbler</code> is intended as an interface to that database, so you can download and explore your music history with the full freedom of R. Please note, this 2nd part assumes you have already set up a Last.fm account and have at least one song already scrobbled.</p>
+<p>As an aside on what <code>scrobbler</code> is not: <code>scrobbler</code> is not intended to be a general wrapper around the Last.fm scrobble API. The <a href="https://www.last.fm/api/scrobbling">full API</a> has a lot of methods available, but the <code>scrobbler</code> package is designed to do one thing; download your listening history into R. If there is other functionality of the API you’d like to see in <code>scrobbler</code>, please reach out on <a href="https://github.com/condwanaland/scrobbler/issues">github</a>.</p>
+<div id="getting-set-up" class="section level3">
+<h3>Getting set up</h3>
+<p>In addition to having a Last.fm account, downloading your scrobbles requires you to have an API key (this just authenricates you with Last.fm). To get an API key, you can go through the process <a href="https://www.last.fm/api/account/create">here</a> (it takes less than 5 mins). Note you should only have to fill out the name and descripton, and you just have to describe that you are downloading your scrobble history for personal analysis. Dont worry about the callback url or homepage. Once you’ve gone through that step, you should be provided with an API key. Save this key somewhere secure!</p>
+</div>
+<div id="downloading-your-music-history" class="section level3">
+<h3>Downloading your music history</h3>
+<p>Now it should be smooth sailing from here. Make sure you start by loading scrobbler</p>
+<pre class="r"><code>library(scrobbler)</code></pre>
+<p>And now call the <code>download_scrobbles</code> function, using your username and API key, to start downloading your tracks.</p>
+<pre class="r"><code>my_songs &lt;- download_scrobbles(
+  username = &quot;your_username&quot;,
+  api_key = &quot;your_api_key&quot;
+  )</code></pre>
+<p>And thats it! You should now have a dataframe called ‘my_songs’ that contains info one row for each song you listened to, along with its timestamp. You can now analyse this in any way you choose. Lets have a look at what it looks like</p>
+<pre><code>##                               song_mbid         song_title
+## 1  192915d7-c2df-44f6-9e08-b7d80745bdd3            So Soon
+## 2  6dd374d1-e707-4de0-89b3-889fbb7d7bad             B Team
+## 3  45d25340-5791-4f93-a642-94494b057646       Toy Soldiers
+## 4  0f361896-d6fc-4179-9987-47bf59437c83            Stutter
+## 5  34d419dd-eaf7-48de-b4df-704c61463cd7            Fallout
+## 6  3c8fe6d5-66ac-3b8b-a3f5-36f63fcff693          Porcelain
+## 7  0050b4bf-21d2-47f2-a306-4af3dad79018 Desperate Measures
+## 8  4d834fbe-e72d-3e06-88d9-da4945421182      Truth Or Dare
+## 9  0ddd52c6-45ed-4064-add0-5d0f0f29af34             By Now
+## 10 0651a786-0711-4ab8-8eee-148d277c143a           My World
+##                             artist_mbid          artist
+## 1  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 2  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 3  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 4  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 5  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 6  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 7  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 8  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 9  e358276d-4377-4b9b-88dd-db0d17b0e3c6 Marianas Trench
+## 10 0103c1cc-4a09-4a5d-a344-56ad99a77193   Avril Lavigne
+##                              album_mbid      album  date_unix
+## 1  180bb020-8349-4031-b8a3-bb544a396d84 Ever After         NA
+## 2  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608151945
+## 3  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608151694
+## 4  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608151493
+## 5  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608151238
+## 6  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608150918
+## 7  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608150689
+## 8  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608150459
+## 9  180bb020-8349-4031-b8a3-bb544a396d84 Ever After 1608150203
+## 10 002a0094-40b7-4403-99ab-f3b0daeffacd     Let Go 1608118840
+##                  date
+## 1                &lt;NA&gt;
+## 2  16 Dec 2020, 20:52
+## 3  16 Dec 2020, 20:48
+## 4  16 Dec 2020, 20:44
+## 5  16 Dec 2020, 20:40
+## 6  16 Dec 2020, 20:35
+## 7  16 Dec 2020, 20:31
+## 8  16 Dec 2020, 20:27
+## 9  16 Dec 2020, 20:23
+## 10 16 Dec 2020, 11:40</code></pre>
+<p>The song_, artist_, and album_mbid columns refer to MusicBrainz ID. MusicBrainz is a music encyclopedia that contains lots of data about songs, artists, and albums. You can use the ID to access that entry in MusicBrainz if you want additional metadata (but be warned, these columns may not always be filled). Accessing MusicBrainz will be covered in another post.</p>
+</div>
+<div id="updating-your-dataframe" class="section level3">
+<h3>Updating your dataframe</h3>
+<p>As you may have noticed, it takes a while to download all your music. It would be a pain if you had to go through that process everytime you wanted to make sure your scrobbles were up to date. <code>scrobbler</code> provides a <code>update_scrobbles</code> function that makes this easier.</p>
+<p>To use <code>update_scrobbles</code> you pass in an existing dataframe of songs, and supply a date columm (you should use the <code>date_unix</code> column that is included in scrobble dataframes by default). This will then only download your new scrobbles not included in the original dataframe, and create a new one with all your tracks.</p>
+<pre class="r"><code>updated_songs &lt;- update_scrobbles(data = my_songs,
+                                  timestamp_column = &quot;date_unix&quot;,
+                                  username = &quot;your_username&quot;,
+                                  api_key = &quot;your_api_key&quot;
+                                  )</code></pre>
+<p>This is much faster than having to redownload every time. Note that a current limitation is that if you have added or removed any columns, this will fail as the new columns will not match the old ones. I plan to find a neater solution in future versions of <code>scrobbler</code>.</p>
+<p>If you have any questions about <code>scrobbler</code>, feel free to reach out on github. Stay tuned for future updates around making authentication easier, and for some more examples of analysing your music. Have fun!</p>
+</div>
