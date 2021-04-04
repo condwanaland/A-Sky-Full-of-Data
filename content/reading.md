@@ -5,6 +5,11 @@ title: Reading
 
 This is a collection of various readings I like. Rather than novels, this list will focus more on things like blog posts, tutorials, etc, and will mainly be about programming/statistics/tech.
 
+* [dplyr vs data.table](https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly) - a community post on Stack Overflow discussing dplyr and data.table.
+
+* [Why I don't use ggplot2](https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/) by Jeff Leek - Another piece that I totally disagree with, but think it's a very good piece of writing.
+
+* [Future of R syntax](https://lionel-.github.io/2016/02/15/ideas-for-an-updated-r-syntax/index.html) by Lionel Henry - A cool piece about Lionel experimenting with some improvements to the R language.
 
 * [How to Debug Small Programs](https://ericlippert.com/2014/03/05/how-to-debug-small-programs/) by Eric Lippert - A fantastic bit of writing on how to approach debugging as a beginner.
 
