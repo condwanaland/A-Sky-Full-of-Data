@@ -1,0 +1,43 @@
+---
+title: Announcing 'words'; an R package containing scrabble allowed english words
+author: R package build
+date: '2021-05-16'
+slug: announcing-words-an-r-package-containing-scrabble-allowed-english-words/index.md
+categories:
+  - package announcement
+  - R
+tags:
+  - package development
+  - R
+  - tutorial
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+I'm thrilled to announce the release of my new package [words](https://github.com/condwanaland/words). `words` is an extremely simple package, but I'm excited to use it for my future projects. 
+
+Recently I've been playing around with some word based puzzles in R. One of the examples of this is [`wordbuilder`](https://github.com/condwanaland/wordbuilder), which finds all valid words of from a given list of 5 letters. In an example like this, one of the challenges is finding a list of valid english words. 
+
+One of the first examples that comes up when you search for english words is [this repo](https://github.com/dwyl/english-words). While I started using this, I realised that its main issue was it contained abbreviations, with no simple way of filtering them out. With a bit more searching, I found a collection of json files hosted by [Word Game Dictionary](https://www.wordgamedictionary.com/word-lists/) that contain words allowed in scrabble. 
+
+Usage of `words` is extremely simple - it contains just a single dataset!
+
+`words` is currently pending acceptance by CRAN. For now, you can download it from github.
+
+```{r}
+devtools::install_github("condwanaland/words")
+```
+
+From there, just call `data` to load the word dataset.
+
+```{r}
+library(words)
+data("words")
+```
+
+The word dataset just contains 2 columns. One for the words, and one showing the length of each word. 
+
+```{r}
+head(words)
+```
+
+If you do any projects in R that require word dictionaries, I hope you'll find `words` useful.
