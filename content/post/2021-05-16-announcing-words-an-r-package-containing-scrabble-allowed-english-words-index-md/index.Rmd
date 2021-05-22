@@ -21,10 +21,10 @@ One of the first examples that comes up when you search for english words is [th
 
 Usage of `words` is extremely simple - it contains just a single dataset!
 
-`words` is currently pending acceptance by CRAN. For now, you can download it from github.
+`words` is available on CRAN, so you can download it with
 
 ```{r}
-devtools::install_github("condwanaland/words")
+install.packages("words")
 ```
 
 From there, just call `data` to load the word dataset.
