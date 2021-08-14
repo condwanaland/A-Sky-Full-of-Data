@@ -23,3 +23,8 @@ linkedin = "conor-neilson-49a04a141"
 twitter = "condwanaland"
 github = "condwanaland"
 
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
