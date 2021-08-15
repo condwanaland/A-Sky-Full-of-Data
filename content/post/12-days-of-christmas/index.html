@@ -1,0 +1,42 @@
+---
+title: Calculating the number of gifts in the ’12 Days of Christmas'
+author: Conor Neilson
+date: '2020-03-07'
+slug: 12-days-of-christmas
+categories:
+  - R
+tags:
+  - R
+  - tutorial
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>Over the holiday period my partner was talking about a question she was posed at a work quiz, which was “How many gifts in total are given in the song”The 12 Days of Christmas". I thought this was a great opportunity to showcase some of the basic skills that are useful to master in R, namely functions and *apply.</p>
+<p>First, we need to consider how to calculate the number of presents gifted in any given day. Taking day 5 as an example, the gifts given are 5 golden rings, 4 calling birds, 3 french hens, two turtle doves, and the partridge in a pear tree. On day 6 we get gifted all of that again, plus 6 geese a-laying. So for day 5, the number of gifts can be written as:</p>
+<pre><code>1 + 2 + 3 + 4 + 5</code></pre>
+<p>And then day 6 would be:</p>
+<pre><code>1 + 2 + 3 + 4 + 5 + 6</code></pre>
+<p>Therefore, for day <strong>n</strong> it would be written as</p>
+<pre><code>1 + 2 + 3 ... + n</code></pre>
+<p>This is known as <a href="https://en.wikipedia.org/wiki/1_%2B_2_%2B_3_%2B_4_%2B_%E2%8B%AF">“The Sum of the First N Natural Numbers”</a>, and can be generalised to the formula</p>
+<pre><code>n(n + 1)/2</code></pre>
+<p>Lets implement this formula as a function in R:</p>
+<pre class="r"><code>daily_number_gifts &lt;- function(n) {
+  n * (n + 1)/2
+}</code></pre>
+<p>Now we can see whether it works.</p>
+<pre class="r"><code>daily_number_gifts(4) == (1 + 2 + 3 + 4)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Great, so our function seems to be working. We can now give it any of the 12 days, and it will tell us how many gifts were given on that day.</p>
+<p>Now we need to run this function for each of the values 1 - 12, and sum them up. No need to write the function 12 times though, we can use <strong>sapply</strong> to pass the vector 1:12 to the function, and it will compute the product for each element of the vector.</p>
+<p><strong>Note:</strong> Why am I using <em>sapply</em>? <a href="https://www.guru99.com/r-apply-sapply-tapply.html">So I get a vector returned instead of a list</a>.</p>
+<pre class="r"><code>sapply(1:12, daily_number_gifts)</code></pre>
+<pre><code>##  [1]  1  3  6 10 15 21 28 36 45 55 66 78</code></pre>
+<p> 
+We get a vector with the number of gifts for each day. To get the total number, lets just wrap the above in “sum”.</p>
+<pre class="r"><code>sum(sapply(1:12, daily_number_gifts))</code></pre>
+<pre><code>## [1] 364</code></pre>
+<p>And there we go. 364 gifts given over the 12 days of Christmas.</p>

@@ -1,0 +1,82 @@
+---
+title: Finding my most played song in a single day with scrobbler
+author: Conor Neilson
+date: '2020-12-17'
+slug: finding-my-most-played-song-in-a-single-day-with-scrobbler
+categories:
+  - R
+tags:
+  - R
+  - tutorial
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+Ever since publishing my first post about the development of `scrobbler` I've been meaning to spend much more time writing and showcasing some of the analyses I wanted to do with it. As with many things, life gets in the way, but this is my effort to show something small and simple.
+
+My idea for this post came from Spotify's '2020 Wrapped' video they make for you showing trends of your listening over the previous year. One thing that stood out to me was that I played Abby Christo's excellent song [Mustang](https://open.spotify.com/track/2CdaFXhNIZQmUws6t9Raqk) over 50 times in a single day! This got me thinking, what if we extended that question back over the whole dataset of my music. Essentially we can ask the question "What song was played the most often on a specific day?".
+
+This is fairly easy to answer with `scrobbler` and `dplyr`, so lets dive in. If you haven't read the previous post about `scrobbler`, I recommend you do that now.
+
+First lets start by loading necessary packages
+```{r, message=FALSE}
+library(scrobbler)
+library(dplyr)
+library(anytime)
+library(tidyr)
+```
+
+Now lets use `scrobbler` to grab all my music history. Note I'm using environment variables here. There will be a future post about this, but you can just pass the parameters as detailed in the `scrobbler` readme.
+```{r, message=FALSE, eval=FALSE}
+my_scrobbles <- download_scrobbles(
+  Sys.getenv('LASTFM_API_USERNAME'),
+  Sys.getenv('LASTFM_API_KEY')
+  )
+```
+
+```{r, echo=FALSE, cache=TRUE}
+# Note that I'm actually loading the scrobbles from a csv file. This is because blogdown was having some weird issues running the above code when rendering the site. I have confirmed the above code works, but couldn't find a work around for this post. If you're trying to download scrobbles, please follow guidelines in the readme
+
+my_scrobbles <- read.csv("my_scrobbles.csv")
+```
+
+Lets just quickly check out what the data looks like
+```{r}
+head(my_scrobbles)
+```
+One thing to notice is that the date column contains time information. This is obviously useful in general, but we want to be able to group by day only, which wont be possible with time also included in the field. This is something `scrobbler` really should handle better through a) better naming (this is really a datetime, not a date), and b) also providing a date only column. 
+
+Luckily, a column like this is easy to parse into just a date, and since I'm lazy, I'm using `anydate()` from Dirk Eddelbuettel's excellent `anytime` [package](https://github.com/eddelbuettel/anytime), which is designed to parse anything into a date. 
+```{r}
+my_scrobbles$date_parsed <- anydate(my_scrobbles$date)
+head(my_scrobbles)
+```
+So now we have a column that identifies a unique day. Now we need a column that identifies each song. You might think we could use the `song_title` column for this, but we'd quickly run into issues with duplicated column names. For instance, take the song 'Runaway'. From title alone, we have no idea if this is the 'Runaway' sung by Bon Jovi, The Corrs, Avril Lavigne, etc etc. The `song_mbid` (MusicBrainz ID) column is a partial solution to this, as it assigns a unique code for each song, however it is somewhat incomplete in the dataset, and so is not truly representative. 
+
+The simplest way to solve this is to just create a new column that concatenates song and artist, thus creating a unique combination. We can use `tidyr`'s `unite` function for this
+
+```{r}
+my_scrobbles <- unite(my_scrobbles, 
+                      song_id, 
+                      c("song_title", "artist"), 
+                      sep = "-", 
+                      remove = FALSE)
+head(my_scrobbles)
+```
+
+So now all we need to do is group by day and song, and count the number of entries in each group. This is the sort of problem I love using `dplyr` for because it composes so beautifully. 
+
+```{r}
+my_scrobbles %>% 
+  group_by(date_parsed, song_id) %>% 
+  count(name = "times_played") %>% 
+  arrange(desc(times_played)) %>% 
+  head(8)
+```
+
+And there we go, on 8th April, 2019, I played Break Free by Ariana Grande 51 times. Only slightly excessive :P.
+
+
+While a simple analysis, this does show some of the cool things you can do with `scrobbler`. It also shows some more things we need to investigate. For instance, as I mentioned at thr start, Spotify thinks I played `Mustang` over 50 times on one day, but my data here says Mustang was only played 29 times. Given spotifys enormous engineering team, I'm doubting the issue is on their side, so it'll become an exercise to me to figure out if the issue is in the Last.fm API, the scrobblers themselves, or my implementation of `scrobbler`...
+
+
+Take care...

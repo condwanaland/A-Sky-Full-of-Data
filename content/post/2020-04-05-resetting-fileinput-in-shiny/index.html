@@ -1,0 +1,34 @@
+---
+title: Resetting fileInput in Shiny
+author: Conor Neilson
+date: '2020-04-05'
+slug: resetting-fileinput-in-shiny
+categories:
+  - R
+  - package development
+tags:
+  - package development
+  - R
+  - tutorial
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>While working on my (currently WIP) package <code>nebula</code>, I ran into an issue with resetting the <code>fileInput</code> component in Shiny.</p>
+<p>In short, <code>nebula</code> allows you to upload a photo of an <a href="https://en.wikipedia.org/wiki/Otolith">otolith</a> (fish ear bone), and mark the positions of the growth rings (like in a tree trunk). Once you’ve finished, you can download the positions as a csv file.</p>
+<p>The issue I ran into, is once you’ve finished marking your photo, if you want to then start a new photo, you need some way of resetting the <code>fileInput</code>, and removing the current photo. This then allows the user to upload a new photo and repeat the process.</p>
+<p>I started implementing this by using the awesome <a href="https://rdrr.io/cran/shinyjs/man/reset.html"><code>reset</code></a> function from <code>shinyjs</code>. This <em>almost</em> worked. It reset all the other elements of my app (<code>selectInput</code>s, <code>textInputs</code>s etc), but it didn’t reset the <code>fileInput</code>. After the <code>reset</code> button was clicked, the uploaded image was still visible in the UI.</p>
+<p>If you dig around online you’ll notice that many people have <a href="https://stackoverflow.com/questions/44203728/how-to-reset-a-value-of-fileinput-in-shiny">brought</a> <a href="https://stackoverflow.com/questions/49344468/resetting-fileinput-in-shiny-app">this up on</a> <a href="https://stackoverflow.com/questions/17352086/how-can-i-update-a-shiny-fileinput-object">Stack</a> <a href="https://stackoverflow.com/questions/44278944/r-shiny-doesnt-reset-fileinput-and-and-keeps-it-in-memory">Overflow</a>, <a href="https://github.com/daattali/shinyjs/issues/104">Github</a>, and <a href="https://groups.google.com/forum/#!topic/shiny-discuss/HbTa4v612FA">Google Groups</a>. It’s a fairly common problem, across all of web design, not just R/Shiny. While a few solutions were suggested in those posts I had a lot of trouble making any of these work, primarily because of the complexity of my upload function (this is my own fault - I should have been more aggressive in refactoring, but this opened up a different can of worms).</p>
+<p>I struggled for a while on how to solve this. Several unsuccessful refactors later, I was still without a solution. Eventually I realised that the reset behaviour I was looking for was essentially a full reload - I want to reset the app back to when it was first loaded in the browser, preserving no state. So I started searching to see if there was someway to reload the Shiny app within Shiny itself.</p>
+<p>I searched a bit, and discovered the javascript method <code>history.go</code>. This has the effect of moving across your browsers history. For example, executing <code>history.go(-1)</code> has the effect of going back one page. I discovered that if you use <code>history.go(0)</code>, this effectively reloads the page.</p>
+<p>Now all I needed was a way to execute this from a shiny button press. There are a variety of ways of doing this, but by far the easiest way is <code>runjs</code> from the <code>shinyjs</code> package. The solution I ended up with was:</p>
+<p>For the UI</p>
+<pre class="r"><code>actionButton(&quot;resetAll&quot;, &quot;Reset All&quot;)</code></pre>
+<p>And the server</p>
+<pre class="r"><code>  observeEvent(input$resetAll, {
+    runjs(&quot;history.go(0)&quot;)
+  })</code></pre>
+<p>While reloading the entire page is a slightly crude solution, it did mean I was enable to eliminate the rest of the <code>reset</code> code I had for other UI components, and just rely on the full page reload. In addition, from a code perspective, this is an extremely compact and simple solution (~3 lines of code). While it does introduce javascript to the app, I find this is a simpler solution than many of the others online.</p>
+<p>While this solution only works for a subset of problems, hopefully others may find it useful if you’re also struggling with the confusing behaviour of resetting fileInput</p>
