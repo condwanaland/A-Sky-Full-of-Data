@@ -16,4 +16,6 @@ I just released a tiny update to `scrobbler`. Something you may have noticed is 
 
 The new version of scrobbler will still print its progress indicators, but will no longer emit your authentication details.
 
+I also fixed a broken link, and made some internal changes to comply with the devel version of R.
+
 Thats all for this release - hopefully later ones will have some more features.
