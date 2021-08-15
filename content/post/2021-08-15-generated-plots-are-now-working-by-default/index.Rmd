@@ -1,0 +1,26 @@
+---
+title: Generated plots are now working by default?
+author: Conor Neilson
+date: '2021-08-15'
+slug: generated-plots-are-now-working-by-default
+categories:
+  - R
+tags:
+  - R
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+ 
+In a [previous post](https://conorneilson.com/post/generated-plots-not-showing-in-blogdown/) I described how plots generated via R code weren't showing in my posts. The fix I ultimately found was to set a particular `knitr` chunk. I didn't really understand it, but it seemed to work.
+
+This no longer seems to be the case. I tried generating some plots today to test, and they work out of the box now. Check the code below - there are no other `knitr` chunks in this document. Not sure what has changed, but I'm happy!
+
+```{r}
+plot(1:10)
+```
+
+```{r}
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) + geom_point()
+```
+
