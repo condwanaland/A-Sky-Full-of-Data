@@ -1,0 +1,104 @@
+---
+title: What I have in my .Rprofile
+author: Conor Neilson
+date: '2021-08-22'
+slug: what-i-have-in-my-rprofile
+categories:
+  - R
+tags:
+  - R
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+The `.Rprofile` file is an extremely useful piece of R. For those who haven't encountered `.Rprofile` before, it is a text file where you can put R code - this code is then `source`'d everytime R starts up. Thus, it makes a great place to set options you use frequently, create functions, or just to wish yourself a good morning. In this post I plan to run through the things I like to put in my `.Rprofile` and also what I explicitly don't put. 
+
+
+### When to not use .Rprofile
+
+While `.Rprofile` is a very useful tool it does come with some drawbacks. Namely it comes with risks of harming reproducibility as your scripts will no longer be self contained. Take a trivial example here with printing of digits. Lets say we print pi:
+```{r}
+pi
+```
+
+Now we'll try setting a global option first to restrict the number of digits printed:
+```{r}
+options(digits = 3)
+pi
+```
+
+Now this option is set in our script, so if we transferred it to another computer, it would still print the same way. But imagine if that `options(digits = 3)` was sitting in your `.Rprofile`? It would be silently loaded at every R session and you may even forget you have it there. But as soon as you transfer your script to another computer, or send it to a colleague, it is highly likely that they don't have that option set and therefore could get different results.
+
+This is a fairly trivial example, but there are lots of ways to silently modify global state in R. So always think about what goes in `.Rprofile` and consider how it may affect reproducibility in the future. 
+
+
+### How to use .Rprofile
+
+Editing your `.Rprofile` is very easy thanks to the excellent `usethis` package. 
+```{r eval=FALSE}
+usethis::edit_r_profile()
+```
+This will pop open your `.Rprofile` file. Edit it as you would any text file, make sure to leave a blank line at the end, then save it, close it, and restart R. Any changes you made will then take effect. 
+
+
+### Environment variables
+
+One thing I really like using `.Rprofile` for is setting environment variables. You can see this in action in an [earlier blog post](https://conorneilson.com/post/auto-authentication-with-scrobbler/) where I talked about how to use environment variables to more easily authenticate `scrobbler`. 
+
+**Sidenote:** Yes, I am aware that `.Renviron` file is better suited to this, however I prefer to just manage the single `.Rprofile` file. 
+
+So anyway, I store two sets of environment variables in my file. First for [scrobbler](https://condwanaland.github.io/scrobbler/).
+
+```{r eval=FALSE}
+Sys.setenv(LASTFM_API_USERNAME = "xxx")
+Sys.setenv(LASTFM_API_KEY = "yyy")
+```
+
+And secondly for [spotty](https://github.com/condwanaland/spotty)
+
+```{r}
+Sys.setenv(SPOTIFY_CLIENT_ID = 'aaa')
+Sys.setenv(SPOTIFY_CLIENT_SECRET = 'bbb')
+```
+
+Having both of these loaded on startup means I never have to think about passing authentication options to either `scrobbler` or `spotty`. If you're interested in seeing an example of the code that picks up auth from variables, you can see `scrobbler`'s implementation [here](https://github.com/condwanaland/scrobbler/blob/master/R/authenticate.R#L13).
+
+
+### Development functions
+
+Finally, I have some aliases for common functions used by devtools, namely `check`, `test`, and `document`.
+
+```{r eval=FALSE}
+dtest <- devtools::test
+
+dcheck <- devtools::check
+
+ddoc <- devtools::document
+```
+
+This creates three functions in my environment. Therefore, rather than having to type `devtools::test()` everytime, I can just type `dtest()` - much shorter!
+
+To some people, this workflow may raise more questions that it answers, so let me explain my rationale.
+
+**Why not just use `library()`?**
+
+* In my opinion, using `library` is bad practise during package development as it attaches new names to your search path. Therefore as a blanket rule I never use `library` while in development mode (obviously if I'm testing/writing some script I'll use library there).
+
+**Why not use the Rstudio shortcuts?**
+
+* Couple of reasons here. Firstly, I just really struggle to remember shortcuts, so I'd prefer to just have a short function to type. Secondly, some of the tests in my packages run conditionally dependent on whether R is in `interactive()` mode or not. Running `devtools::test()` (and therefore `dtest()`) runs in an interactive session, where cmd + shft + T runs in non-interactive mode and therefore skips some of my conditional tests.
+
+
+### Wrapping up
+
+I hope this has demystified the uses of `.Rprofile` for some of you, and showed some of the good uses of it. However, some may be put off by my warning at the beginning, and would prefer to just not touch the `.Rprofile`. To those people, I totally understand, but let me leave you with a worry-free treat. You can set up your `.Rprofile` to greet you when you turn R on and farewell you when you leave - this modifies no options and therefore is completely safe. So personalise your R a bit, and make it a bit friendly. Just copy these two functions into your `.Rprofile` and modify the messages!
+
+```
+.First <- function(){
+  print("Good Morning! I hope you write good code today.")
+}
+
+.Last <- function() {
+  print("Bye bye. Hope you come back soon")
+}
+```
+

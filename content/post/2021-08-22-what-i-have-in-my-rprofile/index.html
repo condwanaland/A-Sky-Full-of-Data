@@ -1,0 +1,76 @@
+---
+title: What I have in my .Rprofile
+author: Conor Neilson
+date: '2021-08-22'
+slug: what-i-have-in-my-rprofile
+categories:
+  - R
+tags:
+  - R
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>The <code>.Rprofile</code> file is an extremely useful piece of R. For those who haven’t encountered <code>.Rprofile</code> before, it is a text file where you can put R code - this code is then <code>source</code>’d everytime R starts up. Thus, it makes a great place to set options you use frequently, create functions, or just to wish yourself a good morning. In this post I plan to run through the things I like to put in my <code>.Rprofile</code> and also what I explicitly don’t put.</p>
+<div id="when-to-not-use-.rprofile" class="section level3">
+<h3>When to not use .Rprofile</h3>
+<p>While <code>.Rprofile</code> is a very useful tool it does come with some drawbacks. Namely it comes with risks of harming reproducibility as your scripts will no longer be self contained. Take a trivial example here with printing of digits. Lets say we print pi:</p>
+<pre class="r"><code>pi</code></pre>
+<pre><code>## [1] 3.141593</code></pre>
+<p>Now we’ll try setting a global option first to restrict the number of digits printed:</p>
+<pre class="r"><code>options(digits = 3)
+pi</code></pre>
+<pre><code>## [1] 3.14</code></pre>
+<p>Now this option is set in our script, so if we transferred it to another computer, it would still print the same way. But imagine if that <code>options(digits = 3)</code> was sitting in your <code>.Rprofile</code>? It would be silently loaded at every R session and you may even forget you have it there. But as soon as you transfer your script to another computer, or send it to a colleague, it is highly likely that they don’t have that option set and therefore could get different results.</p>
+<p>This is a fairly trivial example, but there are lots of ways to silently modify global state in R. So always think about what goes in <code>.Rprofile</code> and consider how it may affect reproducibility in the future.</p>
+</div>
+<div id="how-to-use-.rprofile" class="section level3">
+<h3>How to use .Rprofile</h3>
+<p>Editing your <code>.Rprofile</code> is very easy thanks to the excellent <code>usethis</code> package.</p>
+<pre class="r"><code>usethis::edit_r_profile()</code></pre>
+<p>This will pop open your <code>.Rprofile</code> file. Edit it as you would any text file, make sure to leave a blank line at the end, then save it, close it, and restart R. Any changes you made will then take effect.</p>
+</div>
+<div id="environment-variables" class="section level3">
+<h3>Environment variables</h3>
+<p>One thing I really like using <code>.Rprofile</code> for is setting environment variables. You can see this in action in an <a href="https://conorneilson.com/post/auto-authentication-with-scrobbler/">earlier blog post</a> where I talked about how to use environment variables to more easily authenticate <code>scrobbler</code>.</p>
+<p><strong>Sidenote:</strong> Yes, I am aware that <code>.Renviron</code> file is better suited to this, however I prefer to just manage the single <code>.Rprofile</code> file.</p>
+<p>So anyway, I store two sets of environment variables in my file. First for <a href="https://condwanaland.github.io/scrobbler/">scrobbler</a>.</p>
+<pre class="r"><code>Sys.setenv(LASTFM_API_USERNAME = &quot;xxx&quot;)
+Sys.setenv(LASTFM_API_KEY = &quot;yyy&quot;)</code></pre>
+<p>And secondly for <a href="https://github.com/condwanaland/spotty">spotty</a></p>
+<pre class="r"><code>Sys.setenv(SPOTIFY_CLIENT_ID = &#39;aaa&#39;)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = &#39;bbb&#39;)</code></pre>
+<p>Having both of these loaded on startup means I never have to think about passing authentication options to either <code>scrobbler</code> or <code>spotty</code>. If you’re interested in seeing an example of the code that picks up auth from variables, you can see <code>scrobbler</code>’s implementation <a href="https://github.com/condwanaland/scrobbler/blob/master/R/authenticate.R#L13">here</a>.</p>
+</div>
+<div id="development-functions" class="section level3">
+<h3>Development functions</h3>
+<p>Finally, I have some aliases for common functions used by devtools, namely <code>check</code>, <code>test</code>, and <code>document</code>.</p>
+<pre class="r"><code>dtest &lt;- devtools::test
+
+dcheck &lt;- devtools::check
+
+ddoc &lt;- devtools::document</code></pre>
+<p>This creates three functions in my environment. Therefore, rather than having to type <code>devtools::test()</code> everytime, I can just type <code>dtest()</code> - much shorter!</p>
+<p>To some people, this workflow may raise more questions that it answers, so let me explain my rationale.</p>
+<p><strong>Why not just use <code>library()</code>?</strong></p>
+<ul>
+<li>In my opinion, using <code>library</code> is bad practise during package development as it attaches new names to your search path. Therefore as a blanket rule I never use <code>library</code> while in development mode (obviously if I’m testing/writing some script I’ll use library there).</li>
+</ul>
+<p><strong>Why not use the Rstudio shortcuts?</strong></p>
+<ul>
+<li>Couple of reasons here. Firstly, I just really struggle to remember shortcuts, so I’d prefer to just have a short function to type. Secondly, some of the tests in my packages run conditionally dependent on whether R is in <code>interactive()</code> mode or not. Running <code>devtools::test()</code> (and therefore <code>dtest()</code>) runs in an interactive session, where cmd + shft + T runs in non-interactive mode and therefore skips some of my conditional tests.</li>
+</ul>
+</div>
+<div id="wrapping-up" class="section level3">
+<h3>Wrapping up</h3>
+<p>I hope this has demystified the uses of <code>.Rprofile</code> for some of you, and showed some of the good uses of it. However, some may be put off by my warning at the beginning, and would prefer to just not touch the <code>.Rprofile</code>. To those people, I totally understand, but let me leave you with a worry-free treat. You can set up your <code>.Rprofile</code> to greet you when you turn R on and farewell you when you leave - this modifies no options and therefore is completely safe. So personalise your R a bit, and make it a bit friendly. Just copy these two functions into your <code>.Rprofile</code> and modify the messages!</p>
+<pre><code>.First &lt;- function(){
+  print(&quot;Good Morning! I hope you write good code today.&quot;)
+}
+
+.Last &lt;- function() {
+  print(&quot;Bye bye. Hope you come back soon&quot;)
+}</code></pre>
+</div>
