@@ -1,5 +1,7 @@
 ---
-title: About Me
+title: R Packages
 ---
 
--   [fishdata](/r/fishdata/): A fishdata package
+I've written several R packages, mostly for my own learning and enjoyment. I started writing packages when I finished my MSc, and kinda just kept on doing it here and there. This is a list of everything I consider it be either in a useable state, or is being actively developed on. 
+
+-   [fishdata](/r/fishdata/): A Small Collection of Fish Population Datasets
