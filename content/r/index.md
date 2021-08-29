@@ -9,3 +9,5 @@ I've written several R packages, mostly for my own learning and enjoyment. I sta
 -   [fishdata](/r/fishdata/): A Small Collection of Fish Population Datasets
 
 -   [verhoeff](/r/verhoeff/): Implementation of the 'Verhoeff' Check Digit Algorithm
+
+-   [opentriviadb](/r/opentriviadb/): R Interface to the 'Open Trivia Database'
