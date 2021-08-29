@@ -11,3 +11,12 @@ I've written several R packages, mostly for my own learning and enjoyment. I sta
 -   [verhoeff](/r/verhoeff/): Implementation of the 'Verhoeff' Check Digit Algorithm
 
 -   [opentriviadb](/r/opentriviadb/): R Interface to the 'Open Trivia Database'
+
+-   [summariser](/r/summariser/): Easy Calculation and Visualisation of Confidence Intervals
+
+---
+
+### Coming soon
+
+* nebula
+* spotty
