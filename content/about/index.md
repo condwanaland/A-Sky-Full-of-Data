@@ -18,5 +18,3 @@ After University I joined NZ's Ministry for Primary Industries (MPI) in the Fish
 Eventually I wanted more of a technical challenge, and joined the Agricultural Data Team within MPI. I worked on automating some of the manual processes there, contributed to the quarterly report on the current state of Agricultural based Primary Industries, and built a Shiny app to analyse NZ irrigation data (which unfortunately was never released). 
 
 After being at MPI for a little over 18 months, I decided I was ready for a change. I then joined my current company, where I do a mix of data engineering/modelling and client facing work.
-
-The title of my blog is a reference to my favourite Shania Twain song; [You're Still the One](https://www.youtube.com/watch?v=KNZH-emehxA)
