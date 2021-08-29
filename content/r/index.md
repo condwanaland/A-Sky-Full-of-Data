@@ -14,6 +14,8 @@ I've written several R packages, mostly for my own learning and enjoyment. I sta
 
 -   [summariser](/r/summariser/): Easy Calculation and Visualisation of Confidence Intervals
 
+-   [words](/r/words/): List of English Words from the Scrabble Dictionary
+
 ---
 
 ### Coming soon
