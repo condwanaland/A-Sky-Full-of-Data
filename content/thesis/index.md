@@ -3,7 +3,7 @@ menu: main
 title: Thesis
 ---
 
-I wrote a Masters thesis in 2016 about the life history, migration patterns, and developmental strategies of a New Zealand fish species. I host a copy of it as a gitbook [here](https://condwanaland.github.io/There-and-Back-Again/).
+I wrote a Masters thesis in 2016 about the life history, migration patterns, and developmental strategies of a New Zealand fish species. I host a copy of it as a gitbook [here](https://condwanaland.github.io/There-and-Back-Again/). and [here](/thesisbook/)
 
 **Note:** The version linked above is not the official copy I submitted to Victoria University of Wellington. There have been some minor changes as I updated it for gitbook format, and thus there may be some formatting inconsistencies. The original version of my thesis is found on the [Victoria University Research Archive](http://researcharchive.vuw.ac.nz/handle/10063/6225)
 
