@@ -1,0 +1,143 @@
+---
+title: Two new data packages
+author: Conor Neilson
+date: '2021-10-23'
+slug: two-new-data-packages
+categories:
+  - package announcement
+  - R
+tags:
+  - R
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>I’ve recently released two new data packages for R - read on to learn more about them.</p>
+<!--more-->
+<p>I’ve spent some time recently building a couple of new data packages. I was inspired by coming across a dataset by tech magazine ‘The Hustle’. They collated a dataset called “The Hustle’s iPhone vs. Android Survey” which surveys peoples phone preferences. In analysing this data I found it had a field that reported the city the respondent was from. I thought it would be interesting to pull in additional data about the city, which lead to me needing a list of cities and their associated metadata. The upshot of this is I’m now announcing two new packages: <code>worldcities</code> and <code>phonewar</code>.</p>
+<div id="worldcities" class="section level3">
+<h3>worldcities</h3>
+<p><a href="https://github.com/condwanaland/worldcities">worldcities</a> is a repacking of a dataset provided by SimpleMaps (<a href="https://simplemaps.com/data" class="uri">https://simplemaps.com/data</a>). It contains a dataset of 40,000 cities and associated metadata such as coordinates, country, and population.</p>
+<p>You can install it from my github account</p>
+<pre class="r"><code>remotes::install_github(&quot;condwanaland/worldcities&quot;)</code></pre>
+<p>As with any package, we can load it with <code>library()</code>. At the same time we’ll also load some extra packages for using later</p>
+<pre class="r"><code>library(worldcities)
+library(dplyr)
+library(ggplot2)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(plotly)</code></pre>
+<p>You can then access its data by calling <code>data()</code>.</p>
+<pre class="r"><code>data(&quot;worldcities&quot;)
+head(worldcities)</code></pre>
+<pre><code>##       city     lat      lng     country iso2 iso3  admin_name capital
+## 1    Tokyo 35.6897 139.6922       Japan   JP  JPN       Tokyo primary
+## 2  Jakarta -6.2146 106.8451   Indonesia   ID  IDN     Jakarta primary
+## 3    Delhi 28.6600  77.2300       India   IN  IND       Delhi   admin
+## 4   Mumbai 18.9667  72.8333       India   IN  IND Maharashtra   admin
+## 5   Manila 14.6000 120.9833 Philippines   PH  PHL      Manila primary
+## 6 Shanghai 31.1667 121.4667       China   CN  CHN    Shanghai   admin
+##   population         id
+## 1   37977000 1392685764
+## 2   34540000 1360771077
+## 3   29617000 1356872604
+## 4   23355000 1356226629
+## 5   23088000 1608618140
+## 6   22120000 1156073548</code></pre>
+<p>Lets plot the ten most populous cities.</p>
+<pre class="r"><code># This grabs a map of the world from the `rnaturaldata` packages
+world &lt;- ne_countries(scale = &quot;medium&quot;, returnclass = &quot;sf&quot;)
+
+top &lt;- worldcities %&gt;% 
+  slice_max(population, n = 10)
+  
+ggplot(data = world) +
+  geom_sf() +
+  geom_point(data = top,
+             aes(x = lng, y = lat, colour = city), size = 2) +
+  coord_sf()</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="2100" /></p>
+</div>
+<div id="phonewar" class="section level3">
+<h3>phonewar</h3>
+<p>The second data package I’ve released recently is titled <code>phonewar</code>.</p>
+<p><code>phonewar</code> provides a dataset containing people’s iPhone vs Android preferences based on a survey done by tech magazine ‘The Hustle’ (<a href="https://thehustle.co/home/" class="uri">https://thehustle.co/home/</a>). The survey asked people to fill out:
+1. Do they use Android or iPhone
+1. Their reason for their choice
+1. Whether they have considered switching
+1. Whether they have less respect for people using the other type of phone
+1. Which city they come from</p>
+<p>I’ve enriched this data by cleaning up the ‘city’ responses and adding in extra information about the city (i.e., country and population). For those wondering, yes, it uses <code>worldcities</code> to get this extra data. Cleaning up the city names was a challenging and interesting problem which I’ll write about in a future blog post.</p>
+<p><code>phonewar</code> can also be installed from my github</p>
+<pre class="r"><code>remotes::install_github(&quot;condwanaland/phonewar&quot;)</code></pre>
+<p>Then you can load the <code>phonedata</code> dataset</p>
+<pre class="r"><code>library(phonewar)
+data(&quot;phonedata&quot;)
+head(phonedata)</code></pre>
+<pre><code>## # A tibble: 6 × 11
+## # Groups:   key [6]
+##     key phone_type reason  considered_swit… less_respect_fo… original_city city 
+##   &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;         &lt;chr&gt;
+## 1     1 Android    Cost    No               No               spokane       spok…
+## 2     2 iPhone     Ecosys… Yes              No               marbella spa… marb…
+## 3     3 iPhone     Ease o… Yes              No               cork          cork 
+## 4     4 Android    I star… No               No               ottawa        otta…
+## 5     5 iPhone     Too ma… No               No               manchester, … manc…
+## 6     6 iPhone     Ease o… No               No               bangkok       bang…
+## # … with 4 more variables: lat &lt;dbl&gt;, lng &lt;dbl&gt;, country &lt;chr&gt;,
+## #   population &lt;dbl&gt;</code></pre>
+<p>Lets create a plot of their summary statistics</p>
+<pre class="r"><code>library(viridis)
+library(patchwork)
+phone_sum &lt;- phonedata %&gt;% 
+  group_by(phone_type) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  mutate(pct = n/sum(n))
+
+g1 &lt;- ggplot(phone_sum, aes(y = phone_type, x = pct, fill = phone_type)) +
+  geom_col() +
+  labs(caption = &quot;A: Ownership percentage&quot;)
+
+cons_switch &lt;- phonedata %&gt;% 
+  select(phone_type, considered_switching) %&gt;% 
+  group_by(phone_type, considered_switching) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  group_by(phone_type) %&gt;% 
+  mutate(pct = prop.table(n) * 100) %&gt;% 
+  filter(considered_switching == &quot;Yes&quot;)
+
+
+g2 &lt;- ggplot(cons_switch, aes(y = phone_type, x = pct, fill = phone_type)) +
+  geom_col() +
+  labs(caption = &quot;B: % of owners who have considered \n switching to the other phone type&quot;)
+
+
+respect &lt;- phonedata %&gt;% 
+  select(phone_type, less_respect_for_other) %&gt;% 
+  group_by(phone_type, less_respect_for_other) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  group_by(phone_type) %&gt;% 
+  mutate(pct = prop.table(n) * 100) %&gt;% 
+  filter(less_respect_for_other == &quot;Yes&quot;)
+
+g3 &lt;- ggplot(respect, aes(y = phone_type, x = pct, fill = phone_type)) +
+  geom_col() +
+  labs(caption = &quot;C: % of owners who have less respect \n for people with the other phone type&quot;) +
+  theme(axis.title.y=element_blank())
+
+g1 / (g2 | g3) +
+  plot_layout(guides = &quot;collect&quot;) +
+  plot_annotation(tag_levels = &quot;A&quot;) &amp;
+  geom_text(aes(label = paste0(round(pct, 3), &quot;%&quot;), hjust = 1.2), color = &quot;grey&quot;) &amp;
+  scale_fill_viridis(discrete = TRUE, option = &quot;turbo&quot;) &amp;
+  theme(
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()
+        )</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>So we can see there is a slight preference for iPhones, and that iPhone owners are more likely to consider switching. iPhone owners are also a fair bit more likely to have less respect for Android owners.</p>
+<p>Do bear in mind the source of this data. It comes from a tech magazine and therefore you could assume its reader base has active opinions on this sort of thing. It probably doesn’t reflect the ‘average’ user of a phone.</p>
+<p>I hope you have some fun with these new packages - I certainly had fun making them!</p>
+</div>
