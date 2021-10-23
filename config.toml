@@ -1,11 +1,11 @@
-baseurl = "/"
+baseurl = "https://conorneilson.com"
 title = "A Sky Full of Data"
 author = "Conor Neilson"
 copyright = "&copy; 2020"
 canonifyurls = true
 paginate = 3
 theme = "silhouette-hugo"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
 
 pygmentsUseClasses=true
 
