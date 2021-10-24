@@ -63,12 +63,14 @@ ggplot(data = world) +
 <div id="phonewar" class="section level3">
 <h3>phonewar</h3>
 <p>The second data package I’ve released recently is titled <code>phonewar</code>.</p>
-<p><code>phonewar</code> provides a dataset containing people’s iPhone vs Android preferences based on a survey done by tech magazine ‘The Hustle’ (<a href="https://thehustle.co/home/" class="uri">https://thehustle.co/home/</a>). The survey asked people to fill out:
-1. Do they use Android or iPhone
-1. Their reason for their choice
-1. Whether they have considered switching
-1. Whether they have less respect for people using the other type of phone
-1. Which city they come from</p>
+<p><code>phonewar</code> provides a dataset containing people’s iPhone vs Android preferences based on a survey done by tech magazine ‘The Hustle’ (<a href="https://thehustle.co/home/" class="uri">https://thehustle.co/home/</a>). The survey asked people to fill out:</p>
+<ol style="list-style-type: decimal">
+<li>Do they use Android or iPhone</li>
+<li>Their reason for their choice</li>
+<li>Whether they have considered switching</li>
+<li>Whether they have less respect for people using the other type of phone</li>
+<li>Which city they come from</li>
+</ol>
 <p>I’ve enriched this data by cleaning up the ‘city’ responses and adding in extra information about the city (i.e., country and population). For those wondering, yes, it uses <code>worldcities</code> to get this extra data. Cleaning up the city names was a challenging and interesting problem which I’ll write about in a future blog post.</p>
 <p><code>phonewar</code> can also be installed from my github</p>
 <pre class="r"><code>remotes::install_github(&quot;condwanaland/phonewar&quot;)</code></pre>

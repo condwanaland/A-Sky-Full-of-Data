@@ -69,6 +69,7 @@ ggplot(data = world) +
 The second data package I've released recently is titled `phonewar`. 
 
 `phonewar` provides a dataset containing people's iPhone vs Android preferences based on a survey done by tech magazine ‘The Hustle’ (https://thehustle.co/home/). The survey asked people to fill out:
+
 1. Do they use Android or iPhone
 1. Their reason for their choice
 1. Whether they have considered switching
