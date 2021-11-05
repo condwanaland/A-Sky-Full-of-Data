@@ -12,7 +12,7 @@ featureImage: images/nelson_lakes_photo.jpg
 
 In which I learn about post summaries.
 
-<!--more-->
+<!-- more -->
 
 In various hugo themes, you get the option of having a 'preview' of the text that your post contains. For example, this is how it looks on my blog:
 
@@ -20,7 +20,7 @@ In various hugo themes, you get the option of having a 'preview' of the text tha
 
 I've always been irritated by not being able to control what text went into that little description section. Early in my blogdown journey I looked into it, but quickly got lost in Hugo's `.Summary` and `.Summary.Description` parameters which scared me off. 
 
-However, I recently decided to have another go, and when perusing Hugo's [documentation](https://gohugo.io/content-management/summaries/) I came across the html `<!--more-->` snippet. Turns out, if you add that piece of html, then everything above will be included in the post summary, and anything below will not. This seemed a straightforward, easy solution to the problem I was facing. The only difficult bit was that it is a fairly non-trivial piece of html to remember, so I just went and added it to my blogs standard post [archetype](https://github.com/condwanaland/Still-the-Data/blob/master/themes/silhouette-hugo/archetypes/post.md). Now everytime I create a new post, that little bit is inserted and I remember to write a summary. You can see how it looks for this exact post.
+However, I recently decided to have another go, and when perusing Hugo's [documentation](https://gohugo.io/content-management/summaries/) I came across the html `<!-- more -->` snippet. Turns out, if you add that piece of html, then everything above will be included in the post summary, and anything below will not. This seemed a straightforward, easy solution to the problem I was facing. The only difficult bit was that it is a fairly non-trivial piece of html to remember, so I just went and added it to my blogs standard post [archetype](https://github.com/condwanaland/Still-the-Data/blob/master/themes/silhouette-hugo/archetypes/post.md). Now everytime I create a new post, that little bit is inserted and I remember to write a summary. You can see how it looks for this exact post.
 
 ![](/post/2020-12-23-setting-your-posts-preview-in-blogdown_files/new-post-preview.png)
 

@@ -12,7 +12,7 @@ featureImage: images/nelson_lakes_photo.jpg
 ---
 I finally learn how Github Secrets work!
 
-<!--more-->
+<!-- more -->
 
 ## My previous mistake
 

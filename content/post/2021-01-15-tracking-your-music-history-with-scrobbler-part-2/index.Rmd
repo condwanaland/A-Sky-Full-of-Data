@@ -13,7 +13,7 @@ featureImage: images/nelson_lakes_photo.jpg
 
 In part 2 of this series, we'll be looking at how to actually start using scrobbler to download your music history. 
 
-<!--more-->
+<!-- more -->
 
 As a quick recap from part 1, scrobbling is a service offered by Last.fm, where any music you listen to on other platforms (i.e., Spotify) is recorded and stored by Last.fm, along with a timestamp and associated metadata. `scrobbler` is intended as an interface to that database, so you can download and explore your music history with the full freedom of R. Please note, this 2nd part assumes you have already set up a Last.fm account and have at least one song already scrobbled. 
 

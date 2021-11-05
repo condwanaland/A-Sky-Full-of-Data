@@ -13,7 +13,7 @@ featureImage: images/nelson_lakes_photo.jpg
 ---
 Make your `pkgdown` websites be part of your `blogdown` website. 
 
-<!--more-->
+<!-- more -->
 
 ## Context
 

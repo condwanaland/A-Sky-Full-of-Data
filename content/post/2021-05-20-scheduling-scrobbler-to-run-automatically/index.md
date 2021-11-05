@@ -13,7 +13,7 @@ featureImage: images/nelson_lakes_photo.jpg
 
 Using github to automatically schedule, run, and store dataframes of your scrobbles in a repository. 
 
-<!--more-->
+<!-- more -->
 
 One of the biggest issues you can run into when trying to analyse your scrobble data is waiting for it all to download when running `download_scrobbles()`. While the addition of `update_scrobbles()` partially helps this, it still relies on you having a relatively recent source of scrobbles available in a dataset. 
 

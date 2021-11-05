@@ -15,7 +15,7 @@ featureImage: images/nelson_lakes_photo.jpg
 
 Authenticate automatically using environment variables
 
-<!--more-->
+<!-- more -->
 
 I'm pleased to announce a new version of `scrobbler` which introduces a slightly new way to authenticate `download_scrobbles` and `update_scrobbles` calls. This change is released on CRAN, so you can get the update by running
 
