@@ -48,7 +48,7 @@ head(worldcities)
 ```
 Lets plot the ten most populous cities. 
 
-```{r, dpi=300, message=FALSE}
+```{r, message=FALSE}
 # This grabs a map of the world from the `rnaturaldata` packages
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
