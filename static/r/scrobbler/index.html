@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,23 +39,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">scrobbler</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://conorneilson.com/r">
+  <a href="https://conorneilson.com/r" class="external-link">
     <span class="fa fa-arrow-circle-left fa-lg"></span>
      
     Go back to main site
@@ -92,103 +88,101 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-
-<div id="scrobbler" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#scrobbler" class="anchor"></a>scrobbler</h1></div>
+<p><a href="https://www.repostatus.org/" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active - The project has reached a stable, usable state and is being actively developed."></a> <a href="https://codecov.io/gh/condwanaland/scrobbler" class="external-link"><img src="https://codecov.io/gh/condwanaland/scrobbler/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://github.com/condwanaland/scrobbler/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/condwanaland/scrobbler/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --> # scrobbler</p>
 <p><code>scrobbler</code> is an R package intended to help people download their scrobbles from Last.fm and run an analysis on their listening history.</p>
-<div id="what-on-earth-are-scrobbles" class="section level3">
-<h3 class="hasAnchor">
-<a href="#what-on-earth-are-scrobbles" class="anchor"></a>What on earth are scrobbles?</h3>
-<p><a href="https://www.last.fm/about/trackmymusic">Scrobbling</a> is a way of tracking the history of all the songs you listen to online or locally by using the <a href="https://www.last.fm/home">Last.fm</a> service. While scrobbling originated as a way of recorded what you had listened to on the Last.fm platform, scrobbling is now possible on a range of platforms such as Spotify, Youtube, iTunes, Soundcloud, and most other listening platforms. In all these cases, any scrobbles are still stored on Last.fm’s platform. If you use multiple services for listening to music, you can set up scrobbling on all of them, and use Last.fm as the central hub of your entire listening history.</p>
-<p>For example, if your a spotify user you can create a Last.fm account, navigate to <a href="https://www.last.fm/settings/applications" class="uri">https://www.last.fm/settings/applications</a>, and click the option to conncet your spotify account. Now, anytime you listen to music on spotify, the song, artist, album, and time will be recorded on Last.fm.</p>
+<div class="section level3">
+<h3 id="what-on-earth-are-scrobbles">What on earth are scrobbles?<a class="anchor" aria-label="anchor" href="#what-on-earth-are-scrobbles"></a>
+</h3>
+<p><a href="https://www.last.fm/about/trackmymusic" class="external-link">Scrobbling</a> is a way of tracking the history of all the songs you listen to online or locally by using the <a href="https://www.last.fm/home" class="external-link">Last.fm</a> service. While scrobbling originated as a way of recorded what you had listened to on the Last.fm platform, scrobbling is now possible on a range of platforms such as Spotify, Youtube, iTunes, Soundcloud, and most other listening platforms. In all these cases, any scrobbles are still stored on Last.fm’s platform. If you use multiple services for listening to music, you can set up scrobbling on all of them, and use Last.fm as the central hub of your entire listening history.</p>
+<p>For example, if your a spotify user you can create a Last.fm account, navigate to <a href="https://www.last.fm/settings/applications" class="external-link uri">https://www.last.fm/settings/applications</a>, and click the option to conncet your spotify account. Now, anytime you listen to music on spotify, the song, artist, album, and time will be recorded on Last.fm.</p>
 </div>
-<div id="why-scrobbler" class="section level3">
-<h3 class="hasAnchor">
-<a href="#why-scrobbler" class="anchor"></a>Why scrobbler?</h3>
+<div class="section level3">
+<h3 id="why-scrobbler">Why scrobbler?<a class="anchor" aria-label="anchor" href="#why-scrobbler"></a>
+</h3>
 <p>Last.fm’s webpage is pretty good at providing you some summary statistics about what you’ve been listening to, and who your most played artists are. However, I wanted to be able to get the raw data to analyse myself. Unfortunately, Last.fm does not provide any way for you to automatically download your scrobbles.</p>
 </div>
-<div id="how-to-use-scrobbler" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-use-scrobbler" class="anchor"></a>How to use scrobbler</h3>
+<div class="section level3">
+<h3 id="how-to-use-scrobbler">How to use scrobbler<a class="anchor" aria-label="anchor" href="#how-to-use-scrobbler"></a>
+</h3>
 <p><strong>Note as of version 0.2.15</strong>: <code>scrobbler</code> has recently undergone a major API change. In earlier versions there was an option to install a python script and run that to download your scrobbles. This option has been removed, and the only supported method is going via the <code>Last.fm</code> API. The ‘old’ version is available as a github release.</p>
 <p>You can download the latest version of <code>scrobbler</code> from CRAN with</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("scrobbler")</a></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"scrobbler"</span><span class="op">)</span></span></code></pre>
 <p>Or grab the development version from github with</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("condwanaland/scrobbler")</a></code></pre>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"condwanaland/scrobbler"</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="setting-up-the-api" class="section level3">
-<h3 class="hasAnchor">
-<a href="#setting-up-the-api" class="anchor"></a>Setting up the API</h3>
-<p>In order to use Last.fm’ API you need to get an API key from Last.fm. This takes less than 5 mins, and can be done <a href="https://www.last.fm/api/account/create">here</a></p>
+<div class="section level3">
+<h3 id="setting-up-the-api">Setting up the API<a class="anchor" aria-label="anchor" href="#setting-up-the-api"></a>
+</h3>
+<p>In order to use Last.fm’ API you need to get an API key from Last.fm. This takes less than 5 mins, and can be done <a href="https://www.last.fm/api/account/create" class="external-link">here</a></p>
 <p>Once you have your key and username, you can start downloading your scrobbles</p>
 </div>
-<div id="downloading-scrobbles" class="section level3">
-<h3 class="hasAnchor">
-<a href="#downloading-scrobbles" class="anchor"></a>Downloading scrobbles</h3>
+<div class="section level3">
+<h3 id="downloading-scrobbles">Downloading scrobbles<a class="anchor" aria-label="anchor" href="#downloading-scrobbles"></a>
+</h3>
 <p>To make a dataframe of all your scrobbled tracks, simply call <code>download_scrobbles</code> using your Last.fm username and API key.</p>
-<pre><code><a href="https://github.com/condwanaland/scrobbler">library(scrobbler)
-my_data &lt;- download_scrobbles(username = "your_username", api_key = "your_api_key")</a></code></pre>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/condwanaland/scrobbler" class="external-link">scrobbler</a></span><span class="op">)</span></span>
+<span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_scrobbles.html">download_scrobbles</a></span><span class="op">(</span>username <span class="op">=</span> <span class="st">"your_username"</span>, api_key <span class="op">=</span> <span class="st">"your_api_key"</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="updating-scrobbles" class="section level3">
-<h3 class="hasAnchor">
-<a href="#updating-scrobbles" class="anchor"></a>Updating scrobbles</h3>
+<div class="section level3">
+<h3 id="updating-scrobbles">Updating scrobbles<a class="anchor" aria-label="anchor" href="#updating-scrobbles"></a>
+</h3>
 <p>Once you have a lot of scrobbled tracks it can often take a long time to download them all. It would be a waste of time to have to re-download your entire history of scrobbles everytime you wanted to update.</p>
 <p>To help with this, <code>scrobbler</code> provides the <code>update_scrobbles</code> function. This function takes a dataframe produced by <code>download_scrobbles</code>, and only fetches the tracks that have been scrobbled since you ran <code>download_scrobbles</code>.</p>
-<pre><code>my_updated_data &lt;- update_scrobbles(my_data, 
-                                    timestamp_column = 'unix_date',
-                                    username = "your_username",
-                                    api_key = "your_api_key")</code></pre>
+<pre><code><span><span class="va">my_updated_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_scrobbles.html">update_scrobbles</a></span><span class="op">(</span><span class="va">my_data</span>, </span>
+<span>                                    timestamp_column <span class="op">=</span> <span class="st">'unix_date'</span>,</span>
+<span>                                    username <span class="op">=</span> <span class="st">"your_username"</span>,</span>
+<span>                                    api_key <span class="op">=</span> <span class="st">"your_api_key"</span><span class="op">)</span></span></code></pre>
 <p><code>unix_date</code> is a column outputted by <code>download_scrobbles</code>. It tracks the timestamp of each song, and needs to be passed to <code>update_scrobbles</code> so it knows where to start getting new tracksr from.</p>
-</div>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=scrobbler">https://​cloud.r-project.org/​package=scrobbler</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/condwanaland/scrobbler/">https://​github.com/​condwanaland/​scrobbler/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/condwanaland/scrobbler/issues">https://​github.com/​condwanaland/​scrobbler/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=scrobbler" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/condwanaland/scrobbler/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/condwanaland/scrobbler/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing scrobbler</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Conor Neilson <br><small class="roles"> Maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.repostatus.org/"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active - The project has reached a stable, usable state and is being actively developed."></a></li>
-<li><a href="https://codecov.io/gh/condwanaland/scrobbler"><img src="https://codecov.io/gh/condwanaland/scrobbler/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://travis-ci.org/condwanaland/scrobbler"><img src="https://travis-ci.org/condwanaland/scrobbler.svg?branch=master" alt="Build Status"></a></li>
-<li><a href="https://www.r-pkg.org:443/pkg/scrobbler"><img src="https://www.r-pkg.org/badges/version/scrobbler"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Conor Neilson.</p>
+  <p></p>
+<p>Developed by Conor Neilson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -196,6 +190,8 @@ my_data &lt;- download_scrobbles(username = "your_username", api_key = "your_api
 
   
 
+
+  
 
   </body>
 </html>
