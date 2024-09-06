@@ -23,7 +23,7 @@ Usage of `words` is extremely simple - it contains just a single dataset!
 
 `words` is available on CRAN, so you can download it with
 
-```{r}
+```{r eval=FALSE}
 install.packages("words")
 ```
 

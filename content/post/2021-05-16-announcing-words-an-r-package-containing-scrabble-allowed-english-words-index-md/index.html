@@ -13,17 +13,14 @@ tags:
 featureImage: images/nelson_lakes_photo.jpg
 ---
 
-<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 
 
 <p>I’m thrilled to announce the release of my new package <a href="https://github.com/condwanaland/words">words</a>. <code>words</code> is an extremely simple package, but I’m excited to use it for my future projects.</p>
 <p>Recently I’ve been playing around with some word based puzzles in R. One of the examples of this is <a href="https://github.com/condwanaland/wordbuilder"><code>wordbuilder</code></a>, which finds all valid words of from a given list of 5 letters. In an example like this, one of the challenges is finding a list of valid english words.</p>
 <p>One of the first examples that comes up when you search for english words is <a href="https://github.com/dwyl/english-words">this repo</a>. While I started using this, I realised that its main issue was it contained abbreviations, with no simple way of filtering them out. With a bit more searching, I found a collection of json files hosted by <a href="https://www.wordgamedictionary.com/word-lists/">Word Game Dictionary</a> that contain words allowed in scrabble.</p>
 <p>Usage of <code>words</code> is extremely simple - it contains just a single dataset!</p>
-<p><code>words</code> is currently pending acceptance by CRAN. For now, you can download it from github.</p>
-<pre class="r"><code>devtools::install_github(&quot;condwanaland/words&quot;)</code></pre>
-<pre><code>## Skipping install of &#39;words&#39; from a github remote, the SHA1 (cd44c435) has not changed since last install.
-##   Use `force = TRUE` to force installation</code></pre>
+<p><code>words</code> is available on CRAN, so you can download it with</p>
+<pre class="r"><code>install.packages(&quot;words&quot;)</code></pre>
 <p>From there, just call <code>data</code> to load the word dataset.</p>
 <pre class="r"><code>library(words)
 data(&quot;words&quot;)</code></pre>
