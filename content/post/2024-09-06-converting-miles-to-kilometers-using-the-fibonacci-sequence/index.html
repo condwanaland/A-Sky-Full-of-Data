@@ -1,0 +1,160 @@
+---
+title: Converting miles to kilometers using the fibonacci sequence
+author: Conor Neilson
+date: '2024-09-06'
+slug: converting-miles-to-kilometers-using-the-fibonacci-sequence
+categories:
+  - R
+tags:
+  - R
+draft: yes
+featureImage: images/nelson_lakes_photo.jpg
+---
+
+
+
+<p>Lets do a quick exploration into some interesting properties of the fibonacci sequence!</p>
+<!-- more -->
+<p>Converting distances between miles and kilometers is something we’ve all done a bunch of times (maybe?). For as long as I can remember I’ve held the rough rule in my head of multiplying miles by 1.6 to get the rough amount of kilometers. This is perfectly acceptable. In 99% of day to day, this will be all you need.</p>
+<p>However, I stumbled across a snippet recently that claimed something I found fascinating. Apparently you can use the fibonacci sequence to get a close approximation of a miles to kms conversion. Apparently if you take any fibonacci number (say, 5) and treat this as miles, then the <strong>next</strong> fibonacci will be an approximate conversion of the miles number into kilometers. 5 is followed by 8 in the fibonacci sequence. 5 * 1.6 = 8. Hmmm. Well that singular data point certainly supports the hypothesis! Lets dive into this in a data driven way and see how well this holds across a wide range of fibonacci numbers.</p>
+<p>We’ll start by loading a few useful packages.</p>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(ggforce)</code></pre>
+<p>In case you’re not aware, the Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, starting from 0 and 1. So, the sequence begins 0, 1, 1, 2, 3, 5, 8, 13, and so on. It’s found in many natural patterns, from the arrangement of leaves on a stem to the spirals of shells, and has fascinating mathematical properties that make it useful in various fields, including computing, finance, and even conversion problems like the one we’ll explore here!</p>
+<p>R does not come with a built in function that calculates the fibonacci sequence. It’s always useful to get some practise at writing functions, so this provides a good excuse.</p>
+<pre class="r"><code>my_fib &lt;- function(n) {
+
+  fib_vec &lt;- numeric(n)
+  
+  fib_vec[1] &lt;- 0
+  if (n &gt; 1) {
+    fib_vec[2] &lt;- 1
+  }
+  
+  for (i in 3:n) {
+    fib_vec[i] &lt;- fib_vec[i - 1] + fib_vec[i - 2]
+  }
+  
+  return(fib_vec)
+}</code></pre>
+<p>Notice one important trick here - I preallocate the vector using <code>numeric(n)</code>. This avoids growing the vector each time we add more data which is <a href="https://adv-r.hadley.nz/perf-improve.html#avoid-copies">notoriously slow in R</a>.</p>
+<p>Lets do some quick spot checks of our function to check it looks correct.</p>
+<pre class="r"><code>my_fib(3)</code></pre>
+<pre><code>## [1] 0 1 1</code></pre>
+<pre class="r"><code>my_fib(6)</code></pre>
+<pre><code>## [1] 0 1 1 2 3 5</code></pre>
+<pre class="r"><code>my_fib(10)</code></pre>
+<pre><code>##  [1]  0  1  1  2  3  5  8 13 21 34</code></pre>
+<p>Seems to be correct! Note that this function does have some major issues - namely that it doesn’t handle values of 1 or 2, and that it has no checking for the input type. For example, these all fail (and the last one fails with a rather unhelpful error message).</p>
+<pre class="r"><code>my_fib(1)</code></pre>
+<pre><code>## Error in fib_vec[i] &lt;- fib_vec[i - 1] + fib_vec[i - 2]: replacement has length zero</code></pre>
+<pre class="r"><code>my_fib(2)</code></pre>
+<pre><code>## Error in fib_vec[i] &lt;- fib_vec[i - 1] + fib_vec[i - 2]: replacement has length zero</code></pre>
+<pre class="r"><code>my_fib(&quot;seven&quot;)</code></pre>
+<pre><code>## Warning in numeric(n): NAs introduced by coercion</code></pre>
+<pre><code>## Error in numeric(n): vector size cannot be NA/NaN</code></pre>
+<p>Lets quickly improve our function with some basic best practises. I also spotted something here - since we’re going to be comparing fibonacci numbers to the ones immediately following them, we don’t actually need to worry about the first two (which are 1 and 0). The first comparison we actually do is the 1 to 2, meaning we can actually ignore the first two values.</p>
+<pre class="r"><code>my_fib &lt;- function(n) {
+  
+  if (!is.numeric(n) || n != as.integer(n) || n &lt;= 0) {
+    stop(&quot;Input must be a positive integer.&quot;, call. = FALSE)
+  }
+  
+  fib_vec &lt;- numeric(n)
+  
+  fib1 &lt;- 1
+  fib2 &lt;- 2
+  
+  if(n == 1){
+    fib_vec[1] &lt;- fib1
+  } else if(n == 2) {
+    fib_vec[1] &lt;- fib1
+    fib_vec[2] &lt;- fib2
+  } else {
+    fib_vec[1] &lt;- fib1
+    fib_vec[2] &lt;- fib2
+    
+    for (i in 3:n) {
+      fib_vec[i] &lt;- fib_vec[i - 1] + fib_vec[i - 2]
+    }
+  }
+  
+  return(fib_vec)
+}
+
+my_fib(1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>my_fib(2)</code></pre>
+<pre><code>## [1] 1 2</code></pre>
+<pre class="r"><code>my_fib(&quot;seven&quot;)</code></pre>
+<pre><code>## Error: Input must be a positive integer.</code></pre>
+<p>Ok, now our function is a little more robust. Again, this isn’t strictly necessary when you’re just doing a small experiment like this, but I do like to get the practice in when I can.</p>
+<p>Lets now focus back on our test of whether the fibonacci sequence can simulate the miles to kilometres conversion. We start by writing a quick function that will do an accurate conversion from miles to kilometres. A mile is equal to 1.609344 kilometres, so we just multiply by that</p>
+<pre class="r"><code>miles_to_km &lt;- function(mile){
+  return(mile * 1.609344)
+}
+
+miles_to_km(1)</code></pre>
+<pre><code>## [1] 1.609344</code></pre>
+<pre class="r"><code>miles_to_km(9)</code></pre>
+<pre><code>## [1] 14.4841</code></pre>
+<p>Cool, lets now generate some data to compare. To begin with, lets generate the first 20 fibonacci numbers, and the conversions to km for 1-20 miles</p>
+<pre class="r"><code>fib_numbers &lt;- my_fib(20)
+
+df &lt;- data.frame(
+  miles = fib_numbers,
+  kms_exact = miles_to_km(fib_numbers),
+  kms_approx = lead(fib_numbers, 1)
+) </code></pre>
+<p>Notice we use <code>dplyr::lead</code> to offset the fibonacci numbers so that for each fibonacci number (miles) we also get the successive one (kms_approx).</p>
+<p>Lets plot this to see how they look</p>
+<pre class="r"><code>p &lt;- df %&gt;%
+  gather(key = &quot;method&quot;, value = &quot;kms&quot;, -miles) %&gt;% 
+  ggplot(aes(x = miles, y = kms, color = method)) +
+  geom_point() +
+  geom_smooth()
+
+p</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>That’s pretty cool. They are so alike that we cant even really see that there are two lines there. The lines are almost exactly over the top of each other.</p>
+<p>Lets zoom into the beginning of the plot to see what the differences are like there.</p>
+<pre class="r"><code>p + facet_zoom(xlim = c(0, 8), ylim = c(0, 25), horizontal = FALSE)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We can now see some differences, but they’re pretty tiny. For an estimation this would be more than enough.</p>
+<p>Lets have a look at what the error is per point</p>
+<pre class="r"><code>df &lt;- df %&gt;% 
+  mutate(
+    kms_diff = kms_exact - kms_approx,
+    row = row_number(),
+    direction = kms_diff &lt; 0
+         )
+
+ggplot(df, aes(x = row, y = kms_diff, fill = direction)) +
+  geom_col()</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Very interesting. It seems that this method pretty consistently makes the estimation slightly bigger than the exact one. There are only a couple of bars near the beginning where the exact kms were bigger than the approx kms.</p>
+<p>I wonder if that trend holds for larger values of n? This will start to get impossible to visualise due to the fibonacci sequence growing exponentially, so lets just count the numbers of true/false values.</p>
+<pre class="r"><code>fib_numbers &lt;- my_fib(500)
+kms_exact &lt;- miles_to_km(fib_numbers)
+
+df_larger &lt;- data.frame(
+  miles = fib_numbers,
+  kms_exact = miles_to_km(fib_numbers),
+  kms_approx = lead(fib_numbers, 1)
+) %&gt;% 
+  mutate(
+    kms_diff = kms_exact - kms_approx,
+    row = row_number(),
+    direction = kms_diff &lt; 0
+         ) %&gt;% 
+  na.omit()
+
+ggplot(df_larger, aes(x = direction, fill = direction)) +
+  geom_col(aes(y = direction)) +
+  geom_text(aes(label = after_stat(count)), stat = &quot;count&quot;, vjust = -0.5)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Wow. Calculating out 500 values, and they still maintain the pattern of estimation being slightly bigger than exact.</p>
+<p>I’m not a mathematician, so I don’t have a deep understanding of this pattern and why it happens, but regardless, this was a very cool analysis to whip up.</p>
+<p>Take care!</p>
